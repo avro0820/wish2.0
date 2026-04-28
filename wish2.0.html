@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Nafiza! 🌸</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Pacifico&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body { margin: 0; font-family: 'Quicksand', sans-serif; overflow: hidden; }
+        .font-handwriting { font-family: 'Pacifico', cursive; }
+
+        /* Animated Background */
+        .bg-gradient {
+            background: linear-gradient(-45deg, #fce4ec, #f8bbd0, #e3f2fd, #fff9c4);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* The Animated Wish Box with breathing & swaying effect */
+        .wish-box {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            border-radius: 50px;
+            box-shadow: 0 30px 60px rgba(255, 105, 180, 0.2);
+            animation: boxMasterMove 6s ease-in-out infinite;
+        }
+
+        @keyframes boxMasterMove {
+            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+            33% { transform: translateY(-12px) rotate(1deg) scale(1.01); }
+            66% { transform: translateY(8px) rotate(-1deg) scale(0.99); }
+        }
+
+        /* Content Transition */
+        .content-wrap {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Pulsing Premium Button */
+        .btn-premium {
+            background: linear-gradient(135deg, #ff4d6d, #ff758f);
+            color: white;
+            box-shadow: 0 10px 25px rgba(255, 77, 109, 0.4);
+            animation: btnPulse 2s infinite;
+        }
+        @keyframes btnPulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 77, 109, 0.5); }
+            70% { box-shadow: 0 0 0 20px rgba(255, 77, 109, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 77, 109, 0); }
+        }
+
+        /* Particle Animation */
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            animation: floatUp 7s linear infinite;
+            opacity: 0;
+            z-index: 1;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0); opacity: 0; }
+            20% { opacity: 0.7; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        .hidden { display: none; }
+        .entrance-anim { animation: zoomIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .heart-beat { animation: heartBeat 1.5s infinite; }
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-gradient">
+        <div id="particle-container"></div>
+
+        <!-- Section 1: Welcome Screen -->
+        <div id="startScreen" class="text-center z-10 px-6 entrance-anim">
+            <div class="text-[120px] mb-8 drop-shadow-xl animate-bounce">🧁</div>
+            <h1 class="text-5xl md:text-8xl font-handwriting text-pink-500 mb-6 drop-shadow-sm leading-tight">
+                Happy Birthday,<br>Nafiza!
+            </h1>
+            <p class="text-gray-600 text-lg md:text-2xl mb-12 font-medium italic px-4">
+                Nafiza, tor jonno chotto ekta bhalobashar gift... ✨
+            </p>
+            <button onclick="revealSurprise()" class="btn-premium px-16 py-6 rounded-full text-2xl font-bold transition-all hover:scale-110 active:scale-95 shadow-2xl">
+                Dekhte Chai ➔
+            </button>
+        </div>
+
+        <!-- Section 2: Animated Wish Box -->
+        <div id="wishBox" class="wish-box p-10 md:p-16 w-[92%] max-w-lg text-center hidden z-20 relative mx-4">
+            <div id="contentArea" class="content-wrap">
+                <div id="wishIcon" class="text-8xl mb-6">🌸</div>
+                <h2 id="wishTitle" class="text-3xl md:text-4xl font-handwriting text-pink-600 mb-6 border-b-2 border-pink-100 pb-4">Special Friend</h2>
+                
+                <div class="min-h-[200px] flex items-center justify-center mb-10">
+                    <p id="wishText" class="text-gray-800 text-xl md:text-2xl font-medium italic leading-relaxed"></p>
+                </div>
+            </div>
+            
+            <div class="space-y-6">
+                <button id="nextBtn" onclick="handleNext()" class="bg-gradient-to-r from-pink-500 to-rose-600 text-white w-full py-5 rounded-3xl text-xl font-bold shadow-lg hover:shadow-2xl transition-all active:scale-95">
+                    Next Wish ➔
+                </button>
+                <div class="flex flex-col items-center gap-3">
+                    <div class="h-1.5 w-32 bg-pink-50 rounded-full overflow-hidden">
+                        <div id="progressBar" class="h-full bg-pink-500 transition-all duration-700" style="width: 16.6%"></div>
+                    </div>
+                    <p id="counter" class="text-pink-400 font-bold tracking-widest text-xs uppercase">Message 1 / 6</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Final Grand Ending -->
+        <div id="finalScreen" class="text-center hidden z-30 px-6 entrance-anim">
+            <div class="heart-beat text-[10rem] md:text-[14rem] mb-10 drop-shadow-2xl">💖</div>
+            <h2 class="text-5xl md:text-8xl font-handwriting text-pink-600 mb-8">Truly Special...</h2>
+            <p class="text-gray-800 text-xl md:text-3xl font-semibold leading-relaxed max-w-3xl mx-auto italic">
+                "Tui chhara amar life-ta puro opurno thakto. <br> 
+                Stay happy, stay crazy, ar shobshomoy evabei thakis! <br> 
+                Love you always, Nafiza! 🥰"
+            </p>
+            <div class="mt-20">
+                <button onclick="location.reload()" class="text-pink-500 font-bold border-b-4 border-pink-200 pb-2 hover:text-pink-700 transition-all text-xl">
+                    Once Again? ↺
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const wishes = [
+            { icon: "🌸", title: "My Special Friend", text: "Tui amar life er onek special ekjon friend. Tor sathe kataano shob moment gula always amar kache onek valuable." },
+            { icon: "✨", title: "Pure Happiness", text: "Aajker ei din ta hok full of happiness, smile ar onek onek shundor surprise diye bhora. Tui shobshomoy khushi thakis." },
+            { icon: "🤲", title: "Success & Prayers", text: "Allah tor shob iccha puron koruk, ar tor life hok shobshomoy bright ar successful. Tor agami path hok moshrip." },
+            { icon: "🍰", title: "Forever Besties", text: "Amader ei bondhutto jeno aro onek bochor evabei strong thake. Tor paglami gulo jeno kokhono kom na hoy!" },
+            { icon: "🎈", title: "Joyful Year", text: "Wishing you a year full of cake, gifts, and zero stress! Just stay as happy as you are right now, Nafiza." },
+            { icon: "🎂", title: "Celebration Time", text: "Happy Birthday once again, Nafiza! 🍰 Party hobe kintu! Be ready for the best year of your life." }
+        ];
+
+        let currentIdx = 0;
+
+        function revealSurprise() {
+            document.getElementById('startScreen').classList.add('hidden');
+            const box = document.getElementById('wishBox');
+            box.classList.remove('hidden');
+            box.classList.add('entrance-anim');
+            updateDisplay();
+            triggerConfetti();
+            spawnParticles();
+        }
+
+        function updateDisplay() {
+            const wish = wishes[currentIdx];
+            const area = document.getElementById('contentArea');
+            
+            area.style.opacity = 0;
+            area.style.transform = "scale(0.95) translateY(10px)";
+            
+            setTimeout(() => {
+                document.getElementById('wishIcon').innerText = wish.icon;
+                document.getElementById('wishTitle').innerText = wish.title;
+                document.getElementById('wishText').innerText = wish.text;
+                
+                area.style.opacity = 1;
+                area.style.transform = "scale(1) translateY(0)";
+                
+                const progress = ((currentIdx + 1) / wishes.length) * 100;
+                document.getElementById('progressBar').style.width = progress + '%';
+                document.getElementById('counter').innerText = `Message ${currentIdx + 1} / ${wishes.length}`;
+                
+                if (currentIdx === wishes.length - 1) {
+                    document.getElementById('nextBtn').innerText = "Last Surprise Click ✨";
+                }
+            }, 300);
+        }
+
+        function handleNext() {
+            if (currentIdx < wishes.length - 1) {
+                currentIdx++;
+                updateDisplay();
+                triggerConfetti();
+            } else {
+                showFinal();
+            }
+        }
+
+        function showFinal() {
+            document.getElementById('wishBox').classList.add('hidden');
+            const final = document.getElementById('finalScreen');
+            final.classList.remove('hidden');
+            final.classList.add('entrance-anim');
+            
+            const duration = 12 * 1000;
+            const end = Date.now() + duration;
+
+            (function frame() {
+                confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ff8fa3', '#ff4d6d'] });
+                confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ff8fa3', '#ff4d6d'] });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            }());
+        }
+
+        function triggerConfetti() {
+            confetti({
+                particleCount: 160,
+                spread: 75,
+                origin: { y: 0.6 },
+                colors: ['#ff8fa3', '#ff4d6d', '#fff9c4', '#60a5fa']
+            });
+        }
+
+        function spawnParticles() {
+            const container = document.getElementById('particle-container');
+            const icons = ['❤️', '✨', '🌸', '🧁', '⭐'];
+            setInterval(() => {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.innerText = icons[Math.floor(Math.random() * icons.length)];
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                p.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                container.appendChild(p);
+                setTimeout(() => p.remove(), 7000);
+            }, 400);
+        }
+    </script>
+</body>
+</html>
